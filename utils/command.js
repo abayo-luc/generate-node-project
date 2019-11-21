@@ -1,9 +1,10 @@
 const yargs = require('yargs');
 const inquirer = require('inquirer')
 const createApp = require('./main')
+
 const args = yargs
     .usage('Usage: <command> [options]')
-    .help('h')
+    .help('h').alias('v', 'version')
     .alias('h', 'help').command('name', 'Specify the app name')
     .choices('t', ['javascript', 'typescript'])
     .option('t', {
@@ -27,7 +28,9 @@ const args = yargs
 
 const optionsPrompt = async options => {
     if (options.skip) {
-        return options
+        return {
+            ...options
+        }
     }
     const questions = []
     if (!options.template) {
@@ -59,7 +62,7 @@ const optionsPrompt = async options => {
     }
     const answers = await inquirer.prompt(questions)
     return {
-        name: options._[0],
+        name: options._[0] || 'new-nodejs-app',
         ...options,
         ...answers
     }

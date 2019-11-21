@@ -4,5 +4,8 @@
     "node": true,
     "es6": true
   },
-  "plugins": ["prettier"]
+  "plugins": ["prettier"],
+  "rules": {
+    "no-console": "off",
+  }
 }
