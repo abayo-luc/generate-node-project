@@ -1,0 +1,17 @@
+{
+    "javascript": {
+        "postgresql": {
+            "scripts": {
+                "db:migrate": "node_modules/.bin/sequelize db:migrate",
+                "db:migrate:seed": "node_modules/.bin/sequelize db:seed:all"
+            },
+            "dependencies": {
+                "sequelize": "^4.42.0",
+                "sequelize-cli": "^5.4.0",
+                "pg": "^7.8.0",
+                "pg-hstore": "^2.3.2"
+            }
+        }
+    }
+
+}
