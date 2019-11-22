@@ -2,13 +2,18 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const Listr = require('listr');
-const { projectInstall } = require('pkg-install');
-const { promisify } = require('util');
+const {
+  projectInstall
+} = require('pkg-install');
+const {
+  promisify
+} = require('util');
 const {
   generateFiles,
   executeCommand,
   addDatabase,
-  configureDatabase
+  configureDatabase,
+  addTestingEnv
 } = require('./taks');
 
 const checkDirectoryAccess = promisify(fs.access);
@@ -23,7 +28,9 @@ module.exports = async options => {
     destinationDir,
     currentDir: process.cwd()
   };
-  const { template } = fullOptions;
+  const {
+    template
+  } = fullOptions;
   const sourceDir = path.resolve(
     __dirname,
     '../templates',
@@ -36,8 +43,7 @@ module.exports = async options => {
     console.log('%s Invalid template name', chalk.red.bold('Error'));
     process.exit(1);
   }
-  const todos = new Listr([
-    {
+  const todos = new Listr([{
       title: 'Generating project file',
       task: () => generateFiles(fullOptions)
     },
@@ -47,8 +53,8 @@ module.exports = async options => {
       enabled: () => fullOptions.database !== 'none'
     },
     {
-      title: 'Add test environment',
-      task: () => null,
+      title: 'Adding testing environment',
+      task: () => addTestingEnv(fullOptions),
       enabled: () => fullOptions.test !== 'none'
     },
     {
