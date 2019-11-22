@@ -1,12 +1,8 @@
 const ncp = require('ncp');
 const fs = require('fs');
-const {
-  exec
-} = require('child_process');
+const { exec } = require('child_process');
 const path = require('path');
-const {
-  promisify
-} = require('util');
+const { promisify } = require('util');
 const jsPackage = require('../templates/javascript/package.json');
 const dbPackage = require('../resources/db.json');
 const testingPackage = require('../resources/testing.json');
@@ -18,18 +14,13 @@ const allPkg = {
 };
 const copy = promisify(ncp);
 const runCommand = promisify(exec);
-const generateFiles = async ({
-  sourceDir,
-  destinationDir
-}) => {
+const generateFiles = async ({ sourceDir, destinationDir }) => {
   copy(sourceDir, destinationDir, {
     clobber: false
   });
 };
 
-const executeCommand = async (command, {
-    destinationDir
-  }) =>
+const executeCommand = async (command, { destinationDir }) =>
   runCommand(command.toString(), {
     cwd: destinationDir
   });
@@ -38,18 +29,9 @@ const writePackage = async (packageData, options) => {
   const filePath = path.join(options.destinationDir, 'package.json');
   await fs.writeFileSync(filePath, JSON.stringify(packageData, null, 2));
 };
-const configureDatabase = async options => {
-  const filePath = path.join(options.destinationDir, 'src');
-  runCommand('npx sequelize init', {
-    cwd: filePath
-  });
-};
 
-const addDatabase = async options => {
-  const {
-    database,
-    template
-  } = options;
+const addDatabaseDependencies = async options => {
+  const { database, template } = options;
   const db = database.toLowerCase();
   const dbPkg = {
     ...dbPackage[template][db]
@@ -62,23 +44,35 @@ const addDatabase = async options => {
     ...allPkg[template].scripts,
     ...dbPkg.scripts
   };
-  switch (database.toLowerCase()) {
+  await writePackage(allPkg[template], options);
+};
+
+const configureDatabase = async options => {
+  const { database, destinationDir } = options;
+  const filePath = path.join(destinationDir, 'src');
+  const mongoConfigPath = path.join(__dirname, '../resources/mongo.config.js');
+  const db = database.toLowerCase();
+  switch (db) {
     case 'postgresql':
-      await writePackage(allPkg[template], options);
+      runCommand('npx sequelize init', {
+        cwd: filePath
+      });
       return true;
     case 'mongodb':
-      console.log('>>>>>MongoDB');
+      executeCommand(
+        `cp -i ${mongoConfigPath} ${destinationDir}/src/config/connections.js`,
+        {
+          destinationDir
+        }
+      );
       return true;
     default:
       return false;
   }
 };
+
 const writeTestFiles = async options => {
-  const {
-    template,
-    test,
-    destinationDir
-  } = options;
+  const { template, test, destinationDir } = options;
   if (test === 'jest') {
     const srcFilePath = path.join(
       __dirname,
@@ -99,16 +93,14 @@ const writeTestFiles = async options => {
     `cp -i ${sampleTestPath} ${path.join(
       destinationDir,
       '__tests__/index.spec.js'
-    )}`, {
+    )}`,
+    {
       destinationDir
     }
   );
 };
 const addTestingEnv = async options => {
-  const {
-    test,
-    template
-  } = options;
+  const { test, template } = options;
   const testingConfigs = {
     ...testingPackage[test]
   };
@@ -128,7 +120,7 @@ const addTestingEnv = async options => {
 module.exports = {
   generateFiles,
   executeCommand,
-  addDatabase,
+  addDatabaseDependencies,
   configureDatabase,
   addTestingEnv
 };

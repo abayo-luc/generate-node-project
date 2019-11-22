@@ -1,25 +1,30 @@
 const yargs = require('yargs');
-const inquirer = require('inquirer')
-const createApp = require('./main')
+const inquirer = require('inquirer');
+const createApp = require('./main');
 
 const args = yargs
     .usage('Usage: <command> [options]')
-    .help('h').alias('v', 'version')
-    .alias('h', 'help').command('name', 'Specify the app name')
+    .help('h')
+    .alias('v', 'version')
+    .alias('h', 'help')
+    .command('name', 'Specify the app name')
     .choices('t', ['javascript', 'typescript'])
     .option('t', {
         alias: 'template',
         description: 'Choose which project template to use',
-        type: 'string',
-    }).choices('test', ['mocha', 'jest', 'none'])
+        type: 'string'
+    })
+    .choices('test', ['mocha', 'jest', 'none'])
     .option('test', {
         describe: 'Choose which testing framework to use',
         type: 'string'
-    }).option('d', {
+    })
+    .option('d', {
         alias: 'database',
         description: 'Add database',
-        type: 'string',
-    }).choices('database', ['none', 'postgreSql', 'mongodb'])
+        type: 'string'
+    })
+    .choices('database', ['none', 'postgreSql', 'mongodb'])
     .option('s', {
         alias: 'skip',
         description: 'Skip everything',
@@ -29,10 +34,12 @@ const args = yargs
 const optionsPrompt = async options => {
     if (options.skip) {
         return {
-            ...options
-        }
+            ...options,
+            template: 'javascript',
+            name: args._[0] || 'new-nodejs-app'
+        };
     }
-    const questions = []
+    const questions = [];
     if (!options.template) {
         questions.push({
             type: 'list',
@@ -40,7 +47,7 @@ const optionsPrompt = async options => {
             message: 'Please choose which project template to use',
             choices: ['javascript', 'typescript'],
             default: 'javascript'
-        })
+        });
     }
     if (!options.test) {
         questions.push({
@@ -49,7 +56,7 @@ const optionsPrompt = async options => {
             message: 'Please choose which testing framework to use',
             choices: ['none', 'jest', 'mocha'],
             default: 'none'
-        })
+        });
     }
     if (!options.database) {
         questions.push({
@@ -58,17 +65,17 @@ const optionsPrompt = async options => {
             message: 'Please choose database to use',
             choices: ['none', 'postgreSql', 'mongodb'],
             default: 'none'
-        })
+        });
     }
-    const answers = await inquirer.prompt(questions)
+    const answers = await inquirer.prompt(questions);
     return {
-        name: options._[0] || 'new-nodejs-app',
+        name: args._[0] || 'new-nodejs-app',
         ...options,
         ...answers
-    }
+    };
 };
 
 module.exports = async () => {
-    const options = await optionsPrompt(args)
-    createApp(options)
-}
+    const options = await optionsPrompt(args);
+    createApp(options);
+};
