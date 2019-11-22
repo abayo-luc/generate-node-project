@@ -2,16 +2,14 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const Listr = require('listr');
-const {
-  projectInstall
-} = require('pkg-install');
-const {
-  promisify
-} = require('util');
+const emoji = require('node-emoji');
+
+const { projectInstall } = require('pkg-install');
+const { promisify } = require('util');
 const {
   generateFiles,
   executeCommand,
-  addDatabase,
+  addDatabaseDependencies,
   configureDatabase,
   addTestingEnv
 } = require('./taks');
@@ -28,9 +26,7 @@ module.exports = async options => {
     destinationDir,
     currentDir: process.cwd()
   };
-  const {
-    template
-  } = fullOptions;
+  const { template } = fullOptions;
   const sourceDir = path.resolve(
     __dirname,
     '../templates',
@@ -43,19 +39,20 @@ module.exports = async options => {
     console.log('%s Invalid template name', chalk.red.bold('Error'));
     process.exit(1);
   }
-  const todos = new Listr([{
+  const todos = new Listr([
+    {
       title: 'Generating project file',
       task: () => generateFiles(fullOptions)
     },
     {
       title: 'Adding database dependencies',
-      task: () => addDatabase(fullOptions),
-      enabled: () => fullOptions.database !== 'none'
+      task: () => addDatabaseDependencies(fullOptions),
+      enabled: () => fullOptions.database !== 'none' && !fullOptions.skip
     },
     {
       title: 'Adding testing environment',
       task: () => addTestingEnv(fullOptions),
-      enabled: () => fullOptions.test !== 'none'
+      enabled: () => fullOptions.test !== 'none' && !fullOptions.skip
     },
     {
       title: 'Initialize git',
@@ -71,10 +68,21 @@ module.exports = async options => {
     {
       title: 'Configuring database',
       task: () => configureDatabase(fullOptions),
-      enabled: () => fullOptions.database !== 'none'
+      enabled: () => fullOptions.database !== 'none' && !fullOptions.skip
     }
   ]);
   await todos.run();
-  console.log('%s Project generated successfully', chalk.green.bold('DONE'));
+  console.log(`
+    Project generated successfully.\n
+    To start using the new generated project, please run the following command:
+     - ${chalk.green.italic(`cd ${fullOptions.name}`)}
+     - for starting server: ${chalk.green.italic(`npm star`)}
+     - for running the test: ${chalk.green.italic(`npm test`)}
+
+    Happy hacking with NodeJs
+    Your contribution is welcomed: ${chalk.blue(
+      `https://github.com/abayo-luc/generate-node-project`
+    )} \n
+    With ${chalk.red(emoji.emojify(':heart:'))}!`);
   return true;
 };
