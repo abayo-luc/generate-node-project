@@ -4,8 +4,12 @@ const chalk = require('chalk');
 const Listr = require('listr');
 const emoji = require('node-emoji');
 
-const { projectInstall } = require('pkg-install');
-const { promisify } = require('util');
+const {
+  projectInstall
+} = require('pkg-install');
+const {
+  promisify
+} = require('util');
 const {
   generateFiles,
   executeCommand,
@@ -26,7 +30,9 @@ module.exports = async options => {
     destinationDir,
     currentDir: process.cwd()
   };
-  const { template } = fullOptions;
+  const {
+    template
+  } = fullOptions;
   const sourceDir = path.resolve(
     __dirname,
     '../templates',
@@ -39,20 +45,19 @@ module.exports = async options => {
     console.log('%s Invalid template name', chalk.red.bold('Error'));
     process.exit(1);
   }
-  const todos = new Listr([
-    {
+  const todos = new Listr([{
       title: 'Generating project file',
       task: () => generateFiles(fullOptions)
     },
     {
       title: 'Adding database dependencies',
       task: () => addDatabaseDependencies(fullOptions),
-      enabled: () => fullOptions.database !== 'none' && !fullOptions.skip
+      enabled: () => fullOptions.database !== 'none' && !fullOptions.skip && fullOptions.template === 'javascript'
     },
     {
       title: 'Adding testing environment',
       task: () => addTestingEnv(fullOptions),
-      enabled: () => fullOptions.test !== 'none' && !fullOptions.skip
+      enabled: () => fullOptions.test !== 'none' && !fullOptions.skip && fullOptions.template === 'javascript'
     },
     {
       title: 'Initialize git',
@@ -68,7 +73,7 @@ module.exports = async options => {
     {
       title: 'Configuring database',
       task: () => configureDatabase(fullOptions),
-      enabled: () => fullOptions.database !== 'none' && !fullOptions.skip
+      enabled: () => fullOptions.database !== 'none' && !fullOptions.skip && fullOptions.template === 'javascript'
     }
   ]);
   await todos.run();
