@@ -65,19 +65,19 @@ new_node
     └── seeders
 ```
 
-No more configuration or complicated folder structures, all generate for you.<br>
+Now all the configurations and folder structures are done for you.<br>
 Once the installation is done, you can open your project folder:
 
 ```sh
 cd new_node
 ```
 
-Inside the newly created project, you can run some existing such as commands:
+Inside the newly created project, you can run some existing commands:
 
 ### `npm start` or `yarn start`
 
 Runs the app in development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in you favorite tool: i.e postman.
+And it will be available on [http://localhost:3000](http://localhost:3000).
 
 ### `npm test` or `yarn test`
 
