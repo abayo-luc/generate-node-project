@@ -8,6 +8,18 @@ Generate Node Project works on macOS, Windows, and Linux.<br>
 If something doesn’t work, please [file an issue](https://github.com/abayo-luc/generate-node-project/issues/new).<br>
 If you have questions or need help, please ask via email: luc.bayo@gmail.com
 
+## Installation
+
+```sh
+npm i -g generate-node-project
+```
+
+or
+
+```sh
+yarn global add generate-node-project
+```
+
 ## Quick Overview
 
 ```sh
@@ -35,7 +47,7 @@ To create a new app, you may choose one of the following methods:
 generate-node-project new_node
 ```
 
-### OR crate-node-api
+### OR create-node-api
 
 ```sh
 create-node-api new_node
@@ -82,3 +94,23 @@ And it will be available on [http://localhost:3000](http://localhost:3000).
 ### `npm test` or `yarn test`
 
 Runs the test.<br>
+
+## More Commands:
+
+Generate basic NodeJs API with JS template
+
+```sh
+generate-node-project --skip
+```
+
+Generate basic NodeJs API with JS typescript
+
+```sh
+generate-node-project --template=typescript
+```
+
+View all available commands
+
+```sh
+generate-node-project --help
+```

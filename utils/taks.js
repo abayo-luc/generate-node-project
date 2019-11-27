@@ -1,8 +1,12 @@
 const ncp = require('ncp');
 const fs = require('fs');
-const { exec } = require('child_process');
+const {
+  exec
+} = require('child_process');
 const path = require('path');
-const { promisify } = require('util');
+const {
+  promisify
+} = require('util');
 const jsPackage = require('../templates/javascript/package.json');
 const dbPackage = require('../resources/db.json');
 const testingPackage = require('../resources/testing.json');
@@ -14,13 +18,18 @@ const allPkg = {
 };
 const copy = promisify(ncp);
 const runCommand = promisify(exec);
-const generateFiles = async ({ sourceDir, destinationDir }) => {
+const generateFiles = async ({
+  sourceDir,
+  destinationDir
+}) => {
   copy(sourceDir, destinationDir, {
     clobber: false
   });
 };
 
-const executeCommand = async (command, { destinationDir }) =>
+const executeCommand = async (command, {
+    destinationDir
+  }) =>
   runCommand(command.toString(), {
     cwd: destinationDir
   });
@@ -31,7 +40,10 @@ const writePackage = async (packageData, options) => {
 };
 
 const addDatabaseDependencies = async options => {
-  const { database, template } = options;
+  const {
+    database,
+    template
+  } = options;
   const db = database.toLowerCase();
   const dbPkg = {
     ...dbPackage[template][db]
@@ -48,7 +60,10 @@ const addDatabaseDependencies = async options => {
 };
 
 const configureDatabase = async options => {
-  const { database, destinationDir } = options;
+  const {
+    database,
+    destinationDir
+  } = options;
   const filePath = path.join(destinationDir, 'src');
   const mongoConfigPath = path.join(__dirname, '../resources/mongo.config.js');
   const db = database.toLowerCase();
@@ -60,8 +75,7 @@ const configureDatabase = async options => {
       return true;
     case 'mongodb':
       executeCommand(
-        `cp -i ${mongoConfigPath} ${destinationDir}/src/config/connections.js`,
-        {
+        `cp -i ${mongoConfigPath} ${destinationDir}/src/config/connections.js`, {
           destinationDir
         }
       );
@@ -72,8 +86,13 @@ const configureDatabase = async options => {
 };
 
 const writeTestFiles = async options => {
-  const { template, test, destinationDir } = options;
+  const {
+    template,
+    test,
+    destinationDir
+  } = options;
   if (test === 'jest') {
+    const requestHelper = path.join(__dirname, `../resources/${template}/${test}.request.js`)
     const srcFilePath = path.join(
       __dirname,
       `../resources/${template}/jest.config.js`
@@ -81,26 +100,32 @@ const writeTestFiles = async options => {
     await executeCommand(`cp -i ${srcFilePath} ${destinationDir}`, {
       destinationDir
     });
+    await executeCommand(`cp -i ${requestHelper} ${path.join(destinationDir,
+      '__tests__/helpers/request.js')}`, {
+      destinationDir
+    })
   }
   const sampleTestPath = path.join(
     __dirname,
     `../resources/${template}/${test}.spec.js`
   );
-  await executeCommand('mkdir __tests__', {
+  await executeCommand('mkdir __tests__ && mkdir  __tests__/helpers', {
     destinationDir
   });
   await executeCommand(
     `cp -i ${sampleTestPath} ${path.join(
       destinationDir,
       '__tests__/index.spec.js'
-    )}`,
-    {
+    )}`, {
       destinationDir
     }
   );
 };
 const addTestingEnv = async options => {
-  const { test, template } = options;
+  const {
+    test,
+    template
+  } = options;
   const testingConfigs = {
     ...testingPackage[test]
   };
