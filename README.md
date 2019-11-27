@@ -97,13 +97,13 @@ Runs the test.<br>
 
 ## More Commands:
 
-Generate basic NodeJs API with JS template
+Generate basic NodeJs API: javascript
 
 ```sh
 generate-node-project --skip
 ```
 
-Generate basic NodeJs API with JS typescript
+Generate basic NodeJs API: typscript
 
 ```sh
 generate-node-project --template=typescript
