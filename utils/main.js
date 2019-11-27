@@ -3,8 +3,6 @@ const path = require('path');
 const chalk = require('chalk');
 const Listr = require('listr');
 const emoji = require('node-emoji');
-
-const { projectInstall } = require('pkg-install');
 const { promisify } = require('util');
 const {
   generateFiles,
@@ -67,8 +65,8 @@ module.exports = async options => {
     {
       title: 'Installing dependencies',
       task: () =>
-        projectInstall({
-          cwd: fullOptions.destinationDir
+        executeCommand('npm install', {
+          destinationDir
         })
     },
     {
