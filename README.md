@@ -100,13 +100,13 @@ Runs the test.<br>
 Generate basic NodeJs API: javascript
 
 ```sh
-generate-node-project --skip
+generate-node-project app_name --skip
 ```
 
 Generate basic NodeJs API: typscript
 
 ```sh
-generate-node-project --template=typescript
+generate-node-project app_name --template=typescript
 ```
 
 View all available commands
