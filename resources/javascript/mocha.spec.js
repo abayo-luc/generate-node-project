@@ -1,9 +1,30 @@
-const assert = require('assert');
+import chai, {
+    expect
+} from 'chai';
+import chaiHttp from 'chai-http';
+import app from '../index'
 
-describe('Array', function () {
-    describe('#indexOf()', function () {
-        it('should return -1 when the value is not present', function () {
-            assert.equal([1, 2, 3].indexOf(4), -1);
+chai.use(chaiHttp);
+
+describe('request', () => {
+    describe('GET /', () => {
+        it('should respond with json response', () => {
+            chai.request(app).get('/').end((err, res) => {
+                const {
+                    message
+                } = res.body
+                expect(res.status).equals(200)
+                expect(message).to.contain('Hello world!')
+            })
         });
+        it('should respond with Not found', () => {
+            chai.request(app).get('/hell-world').end((err, res) => {
+                const {
+                    message
+                } = res.body
+                expect(res.status).equals(404)
+                expect(message).to.contain('API endpoint not found!')
+            })
+        })
     });
 });
