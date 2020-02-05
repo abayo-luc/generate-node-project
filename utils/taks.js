@@ -59,6 +59,9 @@ const configureDatabase = async options => {
 			});
 			return true;
 		case 'mongodb':
+			executeCommand('mkdir src/config', {
+				destinationDir
+			});
 			executeCommand(
 				`cp -i ${mongoConfigPath} ${destinationDir}/src/config/connections.js`,
 				{
