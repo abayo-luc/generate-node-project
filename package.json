@@ -1,46 +1,46 @@
 {
-	"name": "generate-node-project",
-	"version": "1.0.4",
-	"description": "Set up NodeJS REST app by running one command. ",
-	"main": "index.js",
-	"bin": {
-		"generate-node-project": "./index.js",
-		"create-node-api": "./index.js"
-	},
-	"scripts": {
-		"test": "mocha __tests__/**/**.spec.js"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+git@github.com:abayo-luc/generate-node-project.git"
-	},
-	"keywords": [
-		"CLI",
-		"NodeJS",
-		"Boilerplate"
-	],
-	"author": "luc.bayo@gmail.com",
-	"license": "MIT",
-	"bugs": {
-		"url": "git@github.com:abayo-luc/generate-node-project/issues"
-	},
-	"homepage": "git@github.com:abayo-luc/generate-node-project#readme",
-	"devDependencies": {
-		"babel-polyfill": "^6.26.0",
-		"eslint": "^6.6.0",
-		"eslint-config-airbnb-base": "^14.0.0",
-		"eslint-config-prettier": "^6.7.0",
-		"eslint-plugin-import": "^2.18.2",
-		"eslint-plugin-prettier": "3.1.1",
-		"chai": "^4.2.0",
-		"mocha": "^6.2.2"
-	},
-	"dependencies": {
-		"chalk": "^3.0.0",
-		"inquirer": "^7.0.0",
-		"listr": "^0.14.3",
-		"ncp": "^2.0.0",
-		"node-emoji": "^1.10.0",
-		"yargs": "^15.0.2"
-	}
+  "name": "generate-node-project",
+  "version": "1.0.2",
+  "description": "Set up NodeJS REST app by running one command. ",
+  "main": "index.js",
+  "bin": {
+    "generate-node-project": "./index.js",
+    "create-node-api": "./index.js"
+  },
+  "scripts": {
+    "test": "mocha __tests__/**/**.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+git@github.com:abayo-luc/generate-node-project.git"
+  },
+  "keywords": [
+    "CLI",
+    "NodeJS",
+    "Boilerplate"
+  ],
+  "author": "luc.bayo@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "git@github.com:abayo-luc/generate-node-project/issues"
+  },
+  "homepage": "git@github.com:abayo-luc/generate-node-project#readme",
+  "devDependencies": {
+    "babel-polyfill": "^6.26.0",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-prettier": "3.1.1",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2"
+  },
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "inquirer": "^7.0.0",
+    "listr": "^0.14.3",
+    "ncp": "^2.0.0",
+    "node-emoji": "^1.10.0",
+    "yargs": "^15.0.2"
+  }
 }
