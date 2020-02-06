@@ -1,6 +1,6 @@
 {
 	"name": "generate-node-project",
-	"version": "1.0.4",
+	"version": "1.0.6",
 	"description": "Set up NodeJS REST app by running one command. ",
 	"main": "index.js",
 	"bin": {

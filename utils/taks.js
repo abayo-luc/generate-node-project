@@ -62,6 +62,7 @@ const configureDatabase = async options => {
 			executeCommand('mkdir src/config', {
 				destinationDir
 			});
+
 			executeCommand(
 				`cp -i ${mongoConfigPath} ${destinationDir}/src/config/connections.js`,
 				{
