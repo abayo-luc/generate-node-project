@@ -6,7 +6,7 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "NODE_ENV=development nodemon --exec babel-node ./src/app.js",
-		"clean:dist": "rm -rf dis && mkdir dist",
+		"clean:dist": "rm -rf dist && mkdir dist",
 		"build-server": "babel -d ./dist ./src",
 		"build": "npm run clean:dist && npm run build-server",
 		"start": "NODE_ENV=development nodemon --exec babel-node ./src/app.js"
