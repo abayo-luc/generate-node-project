@@ -1,4 +1,4 @@
-import request from 'supertest'
-import app from '../../index'
+import request from 'supertest';
+import app from '../../src';
 
-export default request(app)
+export default request(app);
