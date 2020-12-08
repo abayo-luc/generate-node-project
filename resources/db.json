@@ -3,19 +3,44 @@
     "postgresql": {
       "scripts": {
         "db:migrate": "node_modules/.bin/sequelize db:migrate",
-        "db:migrate:seed": "node_modules/.bin/sequelize db:seed:all"
+        "db:migrate:seed": "node_modules/.bin/sequelize db:seed:all",
+        "db:init":"node_modules/.bin/sequelize init"
       },
       "dependencies": {
-        "sequelize": "^4.42.0",
-        "sequelize-cli": "^5.4.0",
-        "pg": "^7.8.0",
-        "pg-hstore": "^2.3.2"
+        "sequelize": "6.3.5",
+        "sequelize-cli": "6.2.0",
+        "pg": "^8.5.1",
+        "pg-hstore": "^2.3.3"
       }
     },
     "mongodb": {
       "scripts": {},
       "dependencies": {
-        "mongoose": "^5.7.12"
+        "mongoose": "^5.11.5"
+      }
+    }
+  },
+  "typescript":{
+    "postgresql": {
+      "scripts": {
+        "db:migrate": "node_modules/.bin/sequelize db:migrate",
+        "db:migrate:seed": "node_modules/.bin/sequelize db:seed:all",
+        "db:init":"node_modules/.bin/sequelize init"
+      },
+      "dependencies": {
+        "sequelize": "6.3.5",
+        "sequelize-cli-typescript": "3.2.0-c",
+        "pg": "^8.5.1",
+        "pg-hstore": "^2.3.3"
+      },
+      "devDependencies":{
+        "@types/sequelize": "^4.28.9"
+      }
+    },
+    "mongodb": {
+      "scripts": {},
+      "dependencies": {
+        "mongoose": "^5.11.5"
       }
     }
   }

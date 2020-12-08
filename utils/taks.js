@@ -4,6 +4,7 @@ const { exec } = require("child_process");
 const path = require("path");
 const { promisify } = require("util");
 const jsPackage = require("../templates/javascript/package.json");
+const tesPackage = require('../templates/typescript/package.json')
 const dbPackage = require("../resources/db.json");
 const testingPackage = require("../resources/testing.json");
 
@@ -11,6 +12,9 @@ const allPkg = {
   javascript: {
     ...jsPackage,
   },
+  typescript:{
+    ...tesPackage
+  }
 };
 const copy = promisify(ncp);
 const runCommand = promisify(exec);
@@ -36,6 +40,7 @@ const addDatabaseDependencies = async (options) => {
   const dbPkg = {
     ...dbPackage[template][db],
   };
+ 
   allPkg[template].dependencies = {
     ...allPkg[template].dependencies,
     ...dbPkg.dependencies,
@@ -56,7 +61,7 @@ const configureDatabase = async (options) => {
   const db = database.toLowerCase();
   switch (db) {
     case "postgresql":
-      runCommand("npx sequelize init", {
+      await runCommand("npm run db:init -- --force", {
         cwd: filePath,
       });
       executeCommand(`cp -i ${seuqlizeConfig} ${destinationDir}`, {

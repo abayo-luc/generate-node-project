@@ -46,9 +46,7 @@ module.exports = async options => {
       title: 'Adding database dependencies',
       task: () => addDatabaseDependencies(fullOptions),
       enabled: () =>
-        fullOptions.database !== 'none' &&
-        !fullOptions.skip &&
-        fullOptions.template === 'javascript'
+        fullOptions.database !== 'none' && !fullOptions.skip 
     },
     {
       title: 'Adding testing environment',
@@ -74,8 +72,7 @@ module.exports = async options => {
       task: () => configureDatabase(fullOptions),
       enabled: () =>
         fullOptions.database !== 'none' &&
-        !fullOptions.skip &&
-        fullOptions.template === 'javascript'
+        !fullOptions.skip 
     }
   ]);
   await todos.run();
