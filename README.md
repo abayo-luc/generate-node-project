@@ -1,3 +1,5 @@
+[![wakatime](https://wakatime.com/badge/github/abayo-luc/generate-node-project.svg)](https://wakatime.com/badge/github/abayo-luc/generate-node-project)
+
 # generate-node-project
 
 Generate a complete NodeJS app (API) with babel, jest, Sequelize, JWT already configured for you.
