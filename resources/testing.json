@@ -1,24 +1,51 @@
 {
-    "jest": {
-        "scripts": {
-            "test": "jest --collect-coverage"
+    "javascript": {
+        "jest": {
+            "scripts": {
+                "test": "jest --collect-coverage"
+            },
+            "devDependencies": {
+                "babel-jest": "^24.8.0",
+                "jest": "24.8.0",
+                "supertest": "4.0.2"
+            }
         },
-        "devDependencies": {
-            "babel-jest": "^24.8.0",
-            "jest": "^24.8.0",
-            "supertest": "^4.0.2",
-            "@types/jest": "^26.0.17"
+        "mocha": {
+            "scripts": {
+                "test": "mocha --require babel-polyfill --require @babel/register __tests__/**"
+            },
+            "devDependencies": {
+                "babel-polyfill": "^6.26.0",
+                "chai": "^4.2.0",
+                "chai-http": "^4.2.1",
+                "mocha": "^6.2.2"
+            }
         }
     },
-    "mocha": {
-        "scripts": {
-            "test": "mocha --require babel-polyfill --require @babel/register __tests__/**"
+    "typescript": {
+        "jest": {
+            "scripts": {
+                "test": "jest --collect-coverage"
+            },
+            "devDependencies": {
+                "babel-jest": "^24.8.0",
+                "jest": "24.8.0",
+                "supertest": "4.0.2",
+                "@types/jest": "28.1.4",
+                "ts-jest": "28.0.5",
+                "@types/supertest": "^2.0.12"
+            }
         },
-        "devDependencies": {
-            "babel-polyfill": "^6.26.0",
-            "chai": "^4.2.0",
-            "chai-http": "^4.2.1",
-            "mocha": "^6.2.2"
+        "mocha": {
+            "scripts": {
+                "test": "mocha --require babel-polyfill --require @babel/register __tests__/**"
+            },
+            "devDependencies": {
+                "babel-polyfill": "^6.26.0",
+                "chai": "^4.2.0",
+                "chai-http": "^4.2.1",
+                "mocha": "^6.2.2"
+            }
         }
     }
 }

@@ -4,13 +4,26 @@
       "scripts": {
         "db:migrate": "node_modules/.bin/sequelize db:migrate",
         "db:migrate:seed": "node_modules/.bin/sequelize db:seed:all",
-        "db:init":"node_modules/.bin/sequelize init"
+        "db:init": "node_modules/.bin/sequelize init"
       },
       "dependencies": {
         "sequelize": "6.3.5",
         "sequelize-cli": "6.2.0",
         "pg": "^8.5.1",
-        "pg-hstore": "^2.3.3"
+        "pg-hstore": "^2.3.3",
+        "mysql2": "^2.3.3"
+      }
+    },
+    "mysql2": {
+      "scripts": {
+        "db:migrate": "node_modules/.bin/sequelize db:migrate",
+        "db:migrate:seed": "node_modules/.bin/sequelize db:seed:all",
+        "db:init": "node_modules/.bin/sequelize init"
+      },
+      "dependencies": {
+        "sequelize": "6.3.5",
+        "sequelize-cli": "6.2.0",
+        "mysql2": "^2.3.3"
       }
     },
     "mongodb": {
@@ -20,12 +33,12 @@
       }
     }
   },
-  "typescript":{
+  "typescript": {
     "postgresql": {
       "scripts": {
         "db:migrate": "node_modules/.bin/sequelize db:migrate",
         "db:migrate:seed": "node_modules/.bin/sequelize db:seed:all",
-        "db:init":"node_modules/.bin/sequelize init"
+        "db:init": "node_modules/.bin/sequelize init"
       },
       "dependencies": {
         "sequelize": "6.3.5",
@@ -33,7 +46,7 @@
         "pg": "^8.5.1",
         "pg-hstore": "^2.3.3"
       },
-      "devDependencies":{
+      "devDependencies": {
         "@types/sequelize": "^4.28.9"
       }
     },

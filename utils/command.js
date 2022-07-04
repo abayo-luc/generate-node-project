@@ -24,7 +24,12 @@ const args = yargs
     description: 'Add database',
     type: 'string',
   })
-  .choices('database', ['none', 'postgreSql', 'mongodb'])
+  .choices('database', [
+    'none',
+    'postgreSql',
+    'mysql2',
+    'mongodb',
+  ])
   .option('c', {
     alias: 'ci',
     description: 'Add Github Action',
@@ -75,7 +80,7 @@ const optionsPrompt = async (options) => {
       type: 'list',
       name: 'database',
       message: 'Please choose database to use',
-      choices: ['none', 'postgreSql', 'mongodb'],
+      choices: ['none', 'postgreSql', 'mysql2', 'mongodb'],
       default: 'none',
     });
   }

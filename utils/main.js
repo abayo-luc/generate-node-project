@@ -62,9 +62,7 @@ module.exports = async (options) => {
       title: 'Adding testing environment',
       task: () => addTestingEnv(fullOptions),
       enabled: () =>
-        fullOptions.test !== 'none' &&
-        !fullOptions.skip &&
-        fullOptions.template === 'javascript',
+        fullOptions.test !== 'none' && !fullOptions.skip,
     },
     {
       title: 'Initialize git',

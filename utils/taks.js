@@ -119,6 +119,8 @@ const configureDatabase = async (options) => {
 
 const writeTestFiles = async (options) => {
   const { template, test, destinationDir } = options;
+  const fileExtention =
+    template === 'typescript' ? 'ts' : 'js';
   await executeCommand(
     'mkdir __tests__ && mkdir  __tests__/helpers',
     {
@@ -128,11 +130,11 @@ const writeTestFiles = async (options) => {
   if (test === 'jest') {
     const requestHelper = path.join(
       __dirname,
-      `../resources/${template}/jest.request.js`
+      `../resources/test/${template}/jest.request.${fileExtention}`
     );
     const srcFilePath = path.join(
       __dirname,
-      `../resources/${template}/jest.config.js`
+      `../resources/test/${template}/jest.config.${fileExtention}`
     );
     await executeCommand(
       `cp -i ${srcFilePath} ${destinationDir}`,
@@ -143,7 +145,7 @@ const writeTestFiles = async (options) => {
     await executeCommand(
       `cp -i ${requestHelper} ${path.join(
         destinationDir,
-        '__tests__/helpers/request.js'
+        `__tests__/helpers/request.${fileExtention}`
       )}`,
       {
         destinationDir,
@@ -152,12 +154,12 @@ const writeTestFiles = async (options) => {
   }
   const sampleTestPath = path.join(
     __dirname,
-    `../resources/${template}/${test}.spec.js`
+    `../resources/test/${template}/${test}.spec.${fileExtention}`
   );
   await executeCommand(
     `cp -i ${sampleTestPath} ${path.join(
       destinationDir,
-      '__tests__/index.spec.js'
+      `__tests__/index.spec.${fileExtention}`
     )}`,
     {
       destinationDir,
@@ -167,7 +169,7 @@ const writeTestFiles = async (options) => {
 const addTestingEnv = async (options) => {
   const { test, template } = options;
   const testingConfigs = {
-    ...testingPackage[test],
+    ...testingPackage[template][test],
   };
 
   allPkg[template].scripts = {
@@ -202,13 +204,6 @@ const configureGithubActions = async (options) => {
 
 const configureDocker = async (options) => {
   const { destinationDir } = options;
-  // await executeCommand(
-  //   `cp -i ${path.join(
-  //     __dirname,
-  //     '../resources/docker/Dockerfile'
-  //   )} ${path.join(destinationDir, 'Dockerfile')}`,
-  //   { destinationDir }
-  // );
   await executeCommand(
     `cp -i ${path.join(
       __dirname,
