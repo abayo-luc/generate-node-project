@@ -11,7 +11,7 @@ env:
 jobs: 
   audit:
     name: audit
-    run-on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: action/checkout@v2
       - uses: actions/setup-node@v2
