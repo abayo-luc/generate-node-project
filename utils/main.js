@@ -9,12 +9,12 @@ const {
   executeCommand,
   addDatabaseDependencies,
   configureDatabase,
-  addTestingEnv
+  addTestingEnv,
 } = require('./taks');
 
 const checkDirectoryAccess = promisify(fs.access);
 
-module.exports = async options => {
+module.exports = async (options) => {
   const destinationDir = `${process.cwd()}/${options.name}`;
   if (!fs.existsSync(destinationDir)) {
     await fs.mkdirSync(destinationDir);
@@ -22,7 +22,7 @@ module.exports = async options => {
   const fullOptions = {
     ...options,
     destinationDir,
-    currentDir: process.cwd()
+    currentDir: process.cwd(),
   };
   const { template } = fullOptions;
   const sourceDir = path.resolve(
@@ -32,21 +32,28 @@ module.exports = async options => {
   );
   fullOptions.sourceDir = sourceDir;
   try {
-    await checkDirectoryAccess(sourceDir, fs.constants.F_OK);
+    await checkDirectoryAccess(
+      sourceDir,
+      fs.constants.F_OK
+    );
   } catch (error) {
-    console.log('%s Invalid template name', chalk.red.bold('Error'));
+    console.log(
+      '%s Invalid template name',
+      chalk.red.bold('Error')
+    );
     process.exit(1);
   }
   const todos = new Listr([
     {
       title: 'Generating project file',
-      task: () => generateFiles(fullOptions)
+      task: () => generateFiles(fullOptions),
     },
     {
       title: 'Adding database dependencies',
       task: () => addDatabaseDependencies(fullOptions),
       enabled: () =>
-        fullOptions.database !== 'none' && !fullOptions.skip 
+        fullOptions.database !== 'none' &&
+        !fullOptions.skip,
     },
     {
       title: 'Adding testing environment',
@@ -54,34 +61,38 @@ module.exports = async options => {
       enabled: () =>
         fullOptions.test !== 'none' &&
         !fullOptions.skip &&
-        fullOptions.template === 'javascript'
+        fullOptions.template === 'javascript',
     },
     {
       title: 'Initialize git',
-      task: () => executeCommand('git init', fullOptions)
+      task: () => executeCommand('git init', fullOptions),
     },
     {
       title: 'Installing dependencies',
       task: () =>
         executeCommand('npm install', {
-          destinationDir
-        })
+          destinationDir,
+        }),
     },
     {
       title: 'Configuring database',
       task: () => configureDatabase(fullOptions),
       enabled: () =>
         fullOptions.database !== 'none' &&
-        !fullOptions.skip 
-    }
+        !fullOptions.skip,
+    },
   ]);
   await todos.run();
   console.log(`
     Project generated successfully.\n
     To start using the new generated project, please run the following command:
      - ${chalk.green.italic(`cd ${fullOptions.name}`)}
-     - for starting server: ${chalk.green.italic(`npm start`)}
-     - for running the test: ${chalk.green.italic(`npm test`)}
+     - for starting server: ${chalk.green.italic(
+       `npm start`
+     )}
+     - for running the test: ${chalk.green.italic(
+       `npm test`
+     )}
 
     Happy hacking with NodeJs
     Your contribution is welcomed: ${chalk.blue(

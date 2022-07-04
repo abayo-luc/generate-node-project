@@ -1,6 +1,6 @@
 {
 	"name": "generate-node-project",
-	"version": "0.1",
+	"version": "1.0.91",
 	"description": "Set up NodeJS REST app by running one command. ",
 	"main": "index.js",
 	"bin": {
@@ -38,14 +38,15 @@
 		"mocha": "10.0.0"
 	},
 	"dependencies": {
-		"chalk": "5.0.1",
+		"chalk": "4.1.0",
 		"inquirer": "7.3.3",
-		"listr": "^0.14.3",
+		"listr": "0.14.3",
 		"ncp": "2.0.0",
 		"node-emoji": "1.10.0",
 		"yargs": "16.2.0"
 	},
 	"optionalDependencies": {
 		"depcheck": "1.4.2"
-	}
+	},
+	"type": "commonjs"
 }
