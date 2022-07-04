@@ -1,37 +1,49 @@
-const ncp = require("ncp");
-const fs = require("fs");
-const { exec } = require("child_process");
-const path = require("path");
-const { promisify } = require("util");
-const jsPackage = require("../templates/javascript/package.json");
-const tesPackage = require('../templates/typescript/package.json')
-const dbPackage = require("../resources/db.json");
-const testingPackage = require("../resources/testing.json");
+const ncp = require('ncp');
+const fs = require('fs');
+const { exec } = require('child_process');
+const path = require('path');
+const { promisify } = require('util');
+const jsPackage = require('../templates/javascript/package.json');
+const tesPackage = require('../templates/typescript/package.json');
+const dbPackage = require('../resources/db.json');
+const testingPackage = require('../resources/testing.json');
 
 const allPkg = {
   javascript: {
     ...jsPackage,
   },
-  typescript:{
-    ...tesPackage
-  }
+  typescript: {
+    ...tesPackage,
+  },
 };
 const copy = promisify(ncp);
 const runCommand = promisify(exec);
-const generateFiles = async ({ sourceDir, destinationDir }) => {
+const generateFiles = async ({
+  sourceDir,
+  destinationDir,
+}) => {
   copy(sourceDir, destinationDir, {
     clobber: false,
   });
 };
 
-const executeCommand = async (command, { destinationDir }) =>
+const executeCommand = async (
+  command,
+  { destinationDir }
+) =>
   runCommand(command.toString(), {
     cwd: destinationDir,
   });
 
 const writePackage = async (packageData, options) => {
-  const filePath = path.join(options.destinationDir, "package.json");
-  await fs.writeFileSync(filePath, JSON.stringify(packageData, null, 2));
+  const filePath = path.join(
+    options.destinationDir,
+    'package.json'
+  );
+  await fs.writeFileSync(
+    filePath,
+    JSON.stringify(packageData, null, 2)
+  );
 };
 
 const addDatabaseDependencies = async (options) => {
@@ -40,7 +52,7 @@ const addDatabaseDependencies = async (options) => {
   const dbPkg = {
     ...dbPackage[template][db],
   };
- 
+
   allPkg[template].dependencies = {
     ...allPkg[template].dependencies,
     ...dbPkg.dependencies,
@@ -54,22 +66,42 @@ const addDatabaseDependencies = async (options) => {
 
 const configureDatabase = async (options) => {
   const { database, destinationDir } = options;
-  const filePath = path.join(destinationDir, "src");
-  const mongoConfigPath = path.join(__dirname, "../resources/mongo.config.js");
-  const seuqlizeConfig = path.join(__dirname, "../resources/.sequelizerc");
+  const filePath = path.join(destinationDir, 'src');
+  const mongoConfigPath = path.join(
+    __dirname,
+    '../resources/mongo.config.js'
+  );
+  const seuqlizeConfig = path.join(
+    __dirname,
+    '../resources/.sequelizerc'
+  );
 
   const db = database.toLowerCase();
   switch (db) {
-    case "postgresql":
-      await runCommand("npm run db:init -- --force", {
+    case 'postgresql':
+      await runCommand('npm run db:init -- --force', {
         cwd: filePath,
       });
-      executeCommand(`cp -i ${seuqlizeConfig} ${destinationDir}`, {
-        destinationDir,
-      });
+      executeCommand(
+        `cp -i ${seuqlizeConfig} ${destinationDir}`,
+        {
+          destinationDir,
+        }
+      );
       return true;
-    case "mongodb":
-      executeCommand("mkdir src/config", {
+    case 'mysql2':
+      await runCommand('npm run db:init -- --force', {
+        cwd: filePath,
+      });
+      executeCommand(
+        `cp -i ${seuqlizeConfig} ${destinationDir}`,
+        {
+          destinationDir,
+        }
+      );
+      return true;
+    case 'mongodb':
+      executeCommand('mkdir src/config', {
         destinationDir,
       });
 
@@ -87,10 +119,13 @@ const configureDatabase = async (options) => {
 
 const writeTestFiles = async (options) => {
   const { template, test, destinationDir } = options;
-  await executeCommand("mkdir __tests__ && mkdir  __tests__/helpers", {
-    destinationDir,
-  });
-  if (test === "jest") {
+  await executeCommand(
+    'mkdir __tests__ && mkdir  __tests__/helpers',
+    {
+      destinationDir,
+    }
+  );
+  if (test === 'jest') {
     const requestHelper = path.join(
       __dirname,
       `../resources/${template}/jest.request.js`
@@ -99,13 +134,16 @@ const writeTestFiles = async (options) => {
       __dirname,
       `../resources/${template}/jest.config.js`
     );
-    await executeCommand(`cp -i ${srcFilePath} ${destinationDir}`, {
-      destinationDir,
-    });
+    await executeCommand(
+      `cp -i ${srcFilePath} ${destinationDir}`,
+      {
+        destinationDir,
+      }
+    );
     await executeCommand(
       `cp -i ${requestHelper} ${path.join(
         destinationDir,
-        "__tests__/helpers/request.js"
+        '__tests__/helpers/request.js'
       )}`,
       {
         destinationDir,
@@ -119,7 +157,7 @@ const writeTestFiles = async (options) => {
   await executeCommand(
     `cp -i ${sampleTestPath} ${path.join(
       destinationDir,
-      "__tests__/index.spec.js"
+      '__tests__/index.spec.js'
     )}`,
     {
       destinationDir,
@@ -144,10 +182,54 @@ const addTestingEnv = async (options) => {
   await writeTestFiles(options);
 };
 
+const configureGithubActions = async (options) => {
+  const { destinationDir } = options;
+  await executeCommand(
+    'mkdir .github && mkdir .github/workflows',
+    { destinationDir }
+  );
+  await executeCommand(
+    `cp -i ${path.join(
+      __dirname,
+      '../resources/github/ci.yml'
+    )} ${path.join(
+      destinationDir,
+      '.github/workflows/ci.yml'
+    )}`,
+    { destinationDir }
+  );
+};
+
+const configureDocker = async (options) => {
+  const { destinationDir } = options;
+  // await executeCommand(
+  //   `cp -i ${path.join(
+  //     __dirname,
+  //     '../resources/docker/Dockerfile'
+  //   )} ${path.join(destinationDir, 'Dockerfile')}`,
+  //   { destinationDir }
+  // );
+  await executeCommand(
+    `cp -i ${path.join(
+      __dirname,
+      '../resources/docker/*'
+    )} ${path.join(destinationDir, '/')}`,
+    { destinationDir }
+  );
+  await executeCommand(
+    `chmod u+x ${path.join(destinationDir, '/*.sh')}`,
+    {
+      destinationDir,
+    }
+  );
+};
+
 module.exports = {
   generateFiles,
   executeCommand,
   addDatabaseDependencies,
   configureDatabase,
   addTestingEnv,
+  configureGithubActions,
+  configureDocker,
 };

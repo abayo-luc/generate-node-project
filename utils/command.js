@@ -12,31 +12,41 @@ const args = yargs
   .option('t', {
     alias: 'template',
     description: 'Choose which project template to use',
-    type: 'string'
+    type: 'string',
   })
   .choices('test', ['mocha', 'jest', 'none'])
   .option('test', {
     describe: 'Choose which testing framework to use',
-    type: 'string'
+    type: 'string',
   })
   .option('d', {
     alias: 'database',
     description: 'Add database',
-    type: 'string'
+    type: 'string',
   })
   .choices('database', ['none', 'postgreSql', 'mongodb'])
+  .option('c', {
+    alias: 'ci',
+    description: 'Add Github Action',
+    type: 'boolean',
+  })
+  .option('d', {
+    alias: 'docker',
+    description: 'Add docker',
+    type: 'boolean',
+  })
   .option('s', {
     alias: 'skip',
     description: 'Skip everything',
-    type: Boolean
+    type: Boolean,
   }).argv;
 
-const optionsPrompt = async options => {
+const optionsPrompt = async (options) => {
   if (options.skip) {
     return {
       ...options,
       template: 'javascript',
-      name: args._[0] || 'new-nodejs-app'
+      name: args._[0] || 'new-nodejs-app',
     };
   }
   const questions = [];
@@ -44,18 +54,20 @@ const optionsPrompt = async options => {
     questions.push({
       type: 'list',
       name: 'template',
-      message: 'Please choose which project template to use',
+      message:
+        'Please choose which project template to use',
       choices: ['javascript', 'typescript'],
-      default: 'javascript'
+      default: 'javascript',
     });
   }
   if (!options.test) {
     questions.push({
       type: 'list',
       name: 'test',
-      message: 'Please choose which testing framework to use',
+      message:
+        'Please choose which testing framework to use',
       choices: ['none', 'jest', 'mocha'],
-      default: 'none'
+      default: 'none',
     });
   }
   if (!options.database) {
@@ -64,14 +76,32 @@ const optionsPrompt = async options => {
       name: 'database',
       message: 'Please choose database to use',
       choices: ['none', 'postgreSql', 'mongodb'],
-      default: 'none'
+      default: 'none',
+    });
+  }
+
+  if (!options.ci) {
+    questions.push({
+      type: 'confirm',
+      name: 'ci',
+      message: 'Add GitHub actions',
+      default: false,
+    });
+  }
+
+  if (!options.docker) {
+    questions.push({
+      type: 'confirm',
+      name: 'docker',
+      message: 'Add docker configuration',
+      default: false,
     });
   }
   const answers = await inquirer.prompt(questions);
   return {
     name: args._[0] || 'new-nodejs-app',
     ...options,
-    ...answers
+    ...answers,
   };
 };
 

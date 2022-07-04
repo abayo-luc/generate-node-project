@@ -1,0 +1,31 @@
+name: workflow on main branch push
+on: 
+  push:
+    branches:
+      - master
+      - main
+env: 
+  ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
+  CI: true
+jobs: 
+  audit:
+    name: audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 12
+      - run: npm i 
+      - run: npm audit --production --level-critical
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 12
+      - name: Install dependencies
+        run: npm install
+      - name: Run test
+        run: npm test

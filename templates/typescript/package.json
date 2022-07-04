@@ -5,10 +5,8 @@
   "main": ".dist/index.js",
   "scripts": {
     "start": "node ./dist/index.js",
-    "dev-start": "ts-node ./src/index.ts",
     "dev": "nodemon -e ts -w ./src -x npm run dev-start",
-    "build-dev": "tsc && npm start",
-    "build": "rm -rf dist && tsc cp -r ./src/templates ./dist/templates",
+    "build": "rm -rf dist && tsc",
     "lint": "tsc --noEmit && eslint 'src/*/**/*.{js,ts,tsx}' --quiet --fix"
   },
   "nodemonConfig": {

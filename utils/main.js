@@ -10,6 +10,8 @@ const {
   addDatabaseDependencies,
   configureDatabase,
   addTestingEnv,
+  configureGithubActions,
+  configureDocker,
 } = require('./taks');
 
 const checkDirectoryAccess = promisify(fs.access);
@@ -43,6 +45,7 @@ module.exports = async (options) => {
     );
     process.exit(1);
   }
+
   const todos = new Listr([
     {
       title: 'Generating project file',
@@ -66,6 +69,17 @@ module.exports = async (options) => {
     {
       title: 'Initialize git',
       task: () => executeCommand('git init', fullOptions),
+    },
+    {
+      title: 'Adding Github Action configuration',
+      task: () =>
+        configureGithubActions({ destinationDir }),
+      enabled: () => fullOptions.ci,
+    },
+    {
+      title: 'Adding Docker configuration',
+      task: () => configureDocker({ destinationDir }),
+      enabled: () => fullOptions.docker,
     },
     {
       title: 'Installing dependencies',
