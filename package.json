@@ -1,6 +1,6 @@
 {
 	"name": "generate-node-project",
-	"version": "1.0.91",
+	"version": "1.1.0",
 	"description": "Set up NodeJS REST app by running one command. ",
 	"main": "index.js",
 	"bin": {
@@ -10,7 +10,8 @@
 	"scripts": {
 		"test": "mocha __tests__/**/**.spec.js",
 		"depcheck": "npx depcheck",
-		"generate-node-project": "./index.js"
+		"generate-node-project": "./index.js",
+		"release": "standard-version"
 	},
 	"repository": {
 		"type": "git",
@@ -35,7 +36,8 @@
 		"eslint-config-prettier": "7.0.0",
 		"eslint-plugin-import": "2.22.1",
 		"eslint-plugin-prettier": "3.2.0",
-		"mocha": "10.0.0"
+		"mocha": "10.0.0",
+		"standard-version": "^9.5.0"
 	},
 	"dependencies": {
 		"chalk": "4.1.0",
