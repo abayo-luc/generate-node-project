@@ -8,7 +8,9 @@
 		"create-node-api": "./index.js"
 	},
 	"scripts": {
-		"test": "mocha __tests__/**/**.spec.js"
+		"test": "mocha __tests__/**/**.spec.js",
+		"depcheck": "npx depcheck",
+		"generate-node-project": "./index.js"
 	},
 	"repository": {
 		"type": "git",
@@ -26,21 +28,24 @@
 	},
 	"homepage": "git@github.com:abayo-luc/generate-node-project#readme",
 	"devDependencies": {
-		"babel-polyfill": "^6.26.0",
-		"chai": "^4.2.0",
-		"eslint": "^7.15.0",
-		"eslint-config-airbnb-base": "^14.2.1",
-		"eslint-config-prettier": "^7.0.0",
-		"eslint-plugin-import": "^2.22.1",
+		"babel-polyfill": "6.26.0",
+		"chai": "4.2.0",
+		"eslint": "7.15.0",
+		"eslint-config-airbnb-base": "14.2.1",
+		"eslint-config-prettier": "7.0.0",
+		"eslint-plugin-import": "2.22.1",
 		"eslint-plugin-prettier": "3.2.0",
-		"mocha": "^8.2.1"
+		"mocha": "10.0.0"
 	},
 	"dependencies": {
-		"chalk": "^4.1.0",
-		"inquirer": "^7.3.3",
-		"listr": "^0.14.3",
-		"ncp": "^2.0.0",
-		"node-emoji": "^1.10.0",
-		"yargs": "^16.2.0"
+		"chalk": "4.1.0",
+		"inquirer": "7.3.3",
+		"listr": "0.14.3",
+		"ncp": "2.0.0",
+		"node-emoji": "1.10.0",
+		"yargs": "16.2.0"
+	},
+	"optionalDependencies": {
+		"depcheck": "1.4.2"
 	}
 }

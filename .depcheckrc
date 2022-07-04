@@ -1,0 +1,11 @@
+# depcheck configuration
+# SEE https://www.npmjs.com/package/depcheck#api
+
+# if you add ignores also annotate why the package is ignored
+# keep list ordered at all times
+ignores:
+  # peer-depencency used by sequelize
+  - mysql2
+
+# do not list packages which may be missing
+skip-missing: true
