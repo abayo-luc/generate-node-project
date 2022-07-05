@@ -1,4 +1,4 @@
-name: deploy main branch workflow
+name: workflow on main branch push
 on: 
   push:
     branches:
@@ -9,6 +9,26 @@ env:
   NPM_PASSWORD: ${{secrets.NPM_ACCESS_TOKEN}}
   CI: true
 jobs: 
+  audit:
+    name: audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 12
+      - run: npm i 
+      - run: npm audit --production --level-critical
+  test: 
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 12
+      - run: npm i 
+      - run: npm run test:ci
   publish:
     runs-on: ubuntu-latest
     steps:

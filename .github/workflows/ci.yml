@@ -1,4 +1,16 @@
 name: test and audi workflow
+on:
+  push:
+    branches:
+      - develop
+      - master
+      - main
+  pull_request:
+    branches:
+      - develop
+      - mater
+      - main
+
 jobs: 
   audit:
     name: audit
@@ -11,13 +23,12 @@ jobs:
       - run: npm i 
       - run: npm audit --production --level-critical
   test:
+    name: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: 12
-      - name: Install dependencies
-        run: npm install
-      - name: Run test
-        run: npm run test:ci
+      - run: npm install
+      - run: npm run test:ci
