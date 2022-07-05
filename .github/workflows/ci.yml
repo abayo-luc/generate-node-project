@@ -1,15 +1,6 @@
-name: test and audi workflow
+name: Pull request workflow
 on:
-  push:
-    branches:
-      - develop
-      - master
-      - main
   pull_request:
-    branches:
-      - develop
-      - mater
-      - main
 
 jobs: 
   audit:

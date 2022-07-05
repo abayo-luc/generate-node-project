@@ -1,4 +1,4 @@
-name: workflow on main branch push
+name: Deployment workflow
 on: 
   push:
     branches:
