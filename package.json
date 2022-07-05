@@ -8,10 +8,12 @@
 		"create-node-api": "./index.js"
 	},
 	"scripts": {
-		"test": "mocha __tests__/**/**.spec.js",
+		"test": "npm run clear && jest --coverage",
 		"depcheck": "npx depcheck",
 		"generate-node-project": "./index.js",
-		"release": "standard-version && git push --follow-tags origin HEAD"
+		"release": "standard-version && git push --follow-tags origin HEAD",
+		"clear": "rm -rf ./__tests__/test-node-generate-*",
+		"test:ci": "jest --coverage --silent"
 	},
 	"repository": {
 		"type": "git",
@@ -29,6 +31,7 @@
 	},
 	"homepage": "git@github.com:abayo-luc/generate-node-project#readme",
 	"devDependencies": {
+		"@types/jest": "^28.1.4",
 		"babel-polyfill": "6.26.0",
 		"chai": "4.2.0",
 		"eslint": "7.15.0",
@@ -36,6 +39,7 @@
 		"eslint-config-prettier": "7.0.0",
 		"eslint-plugin-import": "2.22.1",
 		"eslint-plugin-prettier": "3.2.0",
+		"jest": "^28.1.2",
 		"mocha": "10.0.0",
 		"standard-version": "^9.5.0"
 	},
