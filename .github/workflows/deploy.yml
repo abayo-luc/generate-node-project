@@ -1,0 +1,22 @@
+name: deploy main branch workflow
+on: 
+  push:
+    branches:
+      - master
+      - main
+env: 
+  NPM_USERNAME: ${{secrets.NPM_USERNAME}}
+  NPM_PASSWORD: ${{secrets.NPM_ACCESS_TOKEN}}
+  CI: true
+jobs: 
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 12
+      - run: npm install
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_ACCESS_TOKEN }}

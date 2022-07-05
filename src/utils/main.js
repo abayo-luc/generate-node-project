@@ -17,7 +17,10 @@ const {
 const checkDirectoryAccess = promisify(fs.access);
 
 module.exports = async (options) => {
-  const destinationDir = `${process.cwd()}/${options.name}`;
+  const destinationDir =
+    process.env.NODE_ENV === 'test'
+      ? `${process.cwd()}/__tests__/${options.name}`
+      : `${process.cwd()}/${options.name}`;
   if (!fs.existsSync(destinationDir)) {
     await fs.mkdirSync(destinationDir);
   }
@@ -85,11 +88,13 @@ module.exports = async (options) => {
         executeCommand('npm install', {
           destinationDir,
         }),
+      enabled: () => process.env.NODE_ENV !== 'test',
     },
     {
       title: 'Configuring database',
       task: () => configureDatabase(fullOptions),
       enabled: () =>
+        process.env.NODE_ENV !== 'test' &&
         fullOptions.database !== 'none' &&
         !fullOptions.skip,
     },

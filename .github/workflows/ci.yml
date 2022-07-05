@@ -1,13 +1,4 @@
-name: workflow on main branch push
-on: 
-  push:
-    branches:
-      - master
-      - main
-env: 
-  NPM_USERNAME: ${{secrets.NPM_USERNAME}}
-  NPM_PASSWORD: ${{secrets.NPM_ACCESS_TOKEN}}
-  CI: true
+name: test and audi workflow
 jobs: 
   audit:
     name: audit
@@ -16,17 +7,17 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 12
       - run: npm i 
       - run: npm audit --production --level-critical
-  publish:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
           node-version: 12
-      - run: npm install
-      - uses: JS-DevTools/npm-publish@v1
-        with:
-          token: ${{ secrets.NPM_ACCESS_TOKEN }}
+      - name: Install dependencies
+        run: npm install
+      - name: Run test
+        run: npm run test:ci

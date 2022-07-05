@@ -1,3 +1,3 @@
 #!/usr/bin/env node
 
-require('./utils/command')();
+require('./src/utils/command')();
